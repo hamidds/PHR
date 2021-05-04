@@ -1,2 +1,2 @@
-# PHR-Persian-Handwritten-Recognition
+# PHR: Persian-Handwritten-Recognition
 Persian Handwritten Recognition
