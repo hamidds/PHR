@@ -1,6 +1,5 @@
 from random import randint
 import locale
-from persiantools import digits
 
 total_number = 0
 
@@ -26,7 +25,8 @@ def random_n_base(n, end =1 , step = 1, start = 1, count = 16, mode = 'deafult')
                 range_end = 10**(digit_num) - 1
                 rand_num = randint(range_start, range_end)
                 valid_num = rand_num - (rand_num % 10**(k))
-                temp.append(digits.en_to_fa(thousands_seprator(valid_num)))
+                #temp.append(digits.en_to_fa(thousands_seprator(valid_num)))
+                temp.append(valid_num)
         return temp
 
     for i in range(start, end, step):
@@ -39,12 +39,13 @@ def random_n_base(n, end =1 , step = 1, start = 1, count = 16, mode = 'deafult')
             temp.append(valid_num)
     return temp
 
-def main():
+def generate_random_num():
     #list of total numbers
     tn = []
+
     #print("5-digit: 10,000 - 11,000 - ... - 19,000 ###############################################################")
     tn.append(sorted(random_n_base(4, 20, start = 10)))
-    print(tn) #5 digits               10,000 - 11,000 - ... - 19,000
+    #print(tn[-1]) #5 digits               10,000 - 11,000 - ... - 19,000
 
 
     #print("5-digit: 20,000 - 30,000 - ... - 90,000 ###############################################################")
@@ -91,41 +92,22 @@ def main():
     tn.append(sorted(random_n_base(4, count=50, mode="with_zeros")))
     #print(tn[-1])
 
-
-
+    output=[]
+    for singleType in tn:
+        output.extend(singleType)
 
     #total number of types
-    print("number of types : " + str(len(tn)))
+    print("# of number types : " + str(len(tn)))
 
-    #total numbers quantity
+    #total number of samples
     total = 0
     for type in tn:
-        #print(len(type))
         total += len(type)
-    print("number of numbers :) : " + str(total))
+    print("# of total samples : " + str(total))
+    print('Note: In order to change the number of samples, modify it in randomNumGenerator.py')
+    return output
 
-    '''
-    users = []
-    while len(tn) != 0:
-        user = []
-        for type in tn:
-            if len(type) != 0:
-                if tn.index(type) == 11:    #with zeros
-                    for i in range(1, 2):
-                        rand_index = randint(0, len(type) - 1)
-                        user.append(type.pop(rand_index))
-                rand_index = randint(0, len(type) - 1)
-                user.append(type.pop(rand_index))
-            if len(type) == 0:
-                tn.remove(type)
 
-        users.append(user)
+#if __name__ == "__main__":
+#    numbers = generateRandomNum()
 
-    for user in users:
-        print("User " + str(users.index(user))+ ": " + str(user) + " length = " + str(len(user)))
-
-    return users
-    '''
-
-if __name__ == "__main__":
-    main()
