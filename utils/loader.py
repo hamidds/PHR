@@ -2,8 +2,8 @@ import argparse
 import os
 import sys
 import time
-sys.path.append('utils/')
-from utils import resize_padding
+#sys.path.append('utils/')
+from utils.utils import resize_padding
 from multiprocessing import cpu_count
 
 import torch
