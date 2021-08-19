@@ -9,6 +9,8 @@ import random
 import num2word
 import randomNumGenerator
 import cv2
+import numpy as np
+from sklearn.model_selection import train_test_split
 
 words_path = "../data/words/"
 
@@ -67,6 +69,20 @@ def generate_images(images_dir='../data/images/', labels_dir='../data/labels/'):
 
         idx += 1
 
+    # create train test list text file
+    random_numbers = np.array(random_numbers)
+    train_samples, test_samples = train_test_split(random_numbers, test_size=0.1)
+
+    print('Creating train.txt and test.txt list files...')
+    f = open('../data/train.txt', 'w')
+    for sample in train_samples:
+        f.write(str(sample) + '.jpg\n')
+
+    f = open('../data/test.txt', 'w')
+    for sample in test_samples:
+        f.write(str(sample) + '.jpg\n')
+
+    f.close()
 
 if __name__ == '__main__':
     generate_images(images_dir='../data/images/', labels_dir='../data/labels/')
