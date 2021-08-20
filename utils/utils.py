@@ -3,6 +3,8 @@ import collections
 from PIL import Image
 from torchvision.transforms import ToTensor, Normalize
 import torch
+import cv2
+import numpy as np
 
 mean=[0.485, 0.456, 0.406]
 std=[0.229, 0.224, 0.225]
@@ -17,20 +19,22 @@ def resize_padding(img, width, height):
 	'''
 
 	desiredW, desiredH = width, height
-	imgW, imgH = img.size
+	img_shape = img.shape
+	imgW, imgH = img_shape[1], img_shape[0]
 	ratio = 1.0 * imgW/imgH
 	newW = int(desiredH * ratio)
 	newW = newW if desiredW == None else min(desiredW, newW)
-	img = img.resize((newW, desiredH), Image.ANTIALIAS)
+	img = cv2.resize(img, (newW, desiredH), cv2.INTER_AREA)
 
 	# padding image
 	if desiredW != None and desiredW > newW:
-		new_img = Image.new("RGB", (desiredW, desiredH), color=255)
-		new_img.paste(img, (0, 0))
-		img = new_img
+		white = [255, 255, 255]
+		left_border = int((desiredW - newW) / 2)
+		right_border = desiredW - left_border - newW
+		img = cv2.copyMakeBorder(img.copy(), 0, 0, left_border, right_border, cv2.BORDER_CONSTANT, value=white)
 
-	img = ToTensor()(img)
-	img = Normalize(mean, std)(img)
+	#img = ToTensor()(img)
+	#img = Normalize(mean, std)(img)
 
 	return img
 
@@ -89,3 +93,15 @@ class strLabelConverter(object):
 		if length.numel() == 1:
 			length = length[0]
 			assert t.numel() == length, "text with length: {} does not match declared length: {}".format(t.numel(), length)
+
+
+
+#if __name__ == '__main__':
+
+	#path_to_image = '../data/images/10000.jpg'
+	#img = cv2.imread(path_to_image)
+
+
+	#img = resize_padding(img, 500, 50)
+	#cv2.imshow('image', img)
+	#cv2.waitKey(0)
