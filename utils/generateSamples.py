@@ -60,6 +60,8 @@ def generate_images(images_dir='../data/images/', labels_dir='../data/labels/'):
         num_string = num2word.convert(num)
         num_string += " ریال"
         num_img = create_num_image(num_string)
+        # convert the raw image to a binary one
+        (threshold, num_img) = cv2.threshold(num_img, 127, 255, cv2.THRESH_BINARY)
 
         # save the image and label into /images and /labels directory respectively
         cv2.imwrite(images_dir + str(num) + '.jpg', num_img)
